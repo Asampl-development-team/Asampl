@@ -1,15 +1,11 @@
 ﻿#include "pch.h"
 #include "print_ast.h"
 
-#include<stdlib.h>
-#include<stdio.h>
-#include<string.h>
-
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <fstream>
-#include <io.h>
-#include <fcntl.h>
-#include<windows.h>
 
 
 
