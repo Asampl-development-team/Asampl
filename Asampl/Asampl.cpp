@@ -42,13 +42,14 @@ int main(int argc, char *argv[])
 	
 	Parser p(&lexem_sequence);
 	Tree *tree = p.buid_tree();
+  
 	if (!tree) {
 		std::cerr << "Error while parsing sequence of lexemes";
 		return 0;
 	}
 
 	tree->print(std::cout);
-
+  
 	//execute(tree);
 
 	Tree::free(tree);
