@@ -6,6 +6,8 @@
 #include "handler/python.cpp"
 #endif
 
+namespace Asampl::Interpreter::Handler {
+
 ActiveDownload::ActiveDownload(const std::filesystem::path& filename, IHandler& handler) 
     : stream_in{filename, std::ifstream::binary}
 {
@@ -26,7 +28,7 @@ bool ActiveDownload::fill_data() {
     return true;
 }
 
-HandlerResponse ActiveDownload::download() {
+DownloadResponse ActiveDownload::download() {
     fill_data();
 
     while (true) {
@@ -35,7 +37,7 @@ HandlerResponse ActiveDownload::download() {
             if (fill_data()) {
                 continue;
             } else {
-                return HandlerResponse::new_out_of_data();
+                return DownloadResponse::new_out_of_data();
             }
         } else {
             return response;
@@ -55,4 +57,6 @@ std::unique_ptr<IHandler> open_handler(std::filesystem::path path) {
     }  catch (...) {}
 
     throw InterpreterException("Coult not open handler");
+}
+
 }

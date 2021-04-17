@@ -1,10 +1,10 @@
 #include "interpreter/timeline.h"
 #include "interpreter/exception.h"
-#include "interpreter/image.h"
 #include "interpreter/value.h"
 #include "interpreter/ffi_conversion.h"
 #include "interpreter.h"
 
+#include <string>
 #include <limits>
 #include <cstdlib>
 #include <memory>
@@ -21,6 +21,11 @@
         }                                          \
         std::move(__frame);                        \
     })
+
+namespace Asampl::Interpreter::Timeline {
+
+using namespace Handler;
+namespace std = ::std;
 
 Timeline::Timeline(Program *program) :
     program_(program)
@@ -62,7 +67,7 @@ bool Timeline::prepare_iteration() {
         if (cur_frame.is_valid()) {
             if (cur_frame.timestamp <= cur_time) {
                 variable_it->second = cur_frame.value;
-                cur_frame = HandlerResponse::new_not_ready();
+                cur_frame = Handler::DownloadResponse::new_not_ready();
             }
         }
         if (next_frame.is_valid() && (!cur_frame.is_valid() || next_frame.timestamp <= cur_time)) {
@@ -71,11 +76,13 @@ bool Timeline::prepare_iteration() {
             if (tmp.is_valid() && (!end || tmp.timestamp <= end))
                 dwnld_data.second.next_frame = tmp;
             else
-                dwnld_data.second.next_frame = HandlerResponse::new_not_ready();
+                dwnld_data.second.next_frame = DownloadResponse::new_not_ready();
         }
         if (cur_frame.is_valid() || next_frame.is_valid()) {
             result = true;
         }
     }
     return result;
+}
+
 }
